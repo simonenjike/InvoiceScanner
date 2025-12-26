@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ===========================================================================
+  Project: Invoice Scanner Service
+  Description: REST service for downloading and scanning invoice PDFs for blacklisted IBANs.
+  Build System: Maven + Spring Boot
+  Java Version: 21
+  Author: Simone Njike
+  ===========================================================================
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+    <!-- ==== Maven Base Configuration ==== -->
+    <modelVersion>4.0.0</modelVersion>
+    
+    <!-- ==== Spring Boot Parent POM ==== -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.5.7</version>
+        <relativePath/>
+    </parent>
+    
+    <!-- ==== Project Information ==== -->
+    <groupId>sim.refpro</groupId>
+    <artifactId>invoicescanner</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>InvoiceScanner</name>
+    <description>Invoice Scanner Service – prüft PDF Rechnungen auf gesperrte IBANs</description>
+      
+    <!-- ==== Build & Compiler Settings ==== -->
+    <properties>
+        <java.version>21</java.version>
+    </properties>
+	
+    <dependencies>
+        
+        <!-- Spring Boot Web (REST API + embedded Tomcat + JSON support) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- PDF text extraction -->
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+
+        <!-- IBAN utility (validation and format checks)  -->
+        <dependency>
+            <groupId>org.iban4j</groupId>
+            <artifactId>iban4j</artifactId>
+            <version>3.2.7-RELEASE</version>
+        </dependency>        
+        
+        <!-- Bean Validation (for @Valid, @NotBlank etc.) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        
+        <!-- Tests (JUnit5, Mockito, AssertJ, Spring TestContext) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+	
+    </dependencies>
+    
+    <!-- ==== Build configuration ==== -->
+    <build>
+        <plugins>
+
+            <!-- Spring Boot Plugin (repackage executable JAR) -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Java compiler plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <release>${java.version}</release>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+            
+        </plugins>
+    </build>
+
+</project>
